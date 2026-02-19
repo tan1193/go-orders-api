@@ -11,3 +11,6 @@ test-race:
 
 docker-up:
 	docker compose up --build
+
+docker-postgres:
+	docker compose up -d postgres
