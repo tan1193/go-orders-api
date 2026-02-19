@@ -33,6 +33,8 @@ func main() {
 	}
 	defer db.Close()
 
+	logger.Printf("msg=db_connection_successful")
+
 	pingCtx, pingCancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer pingCancel()
 	if err := db.PingContext(pingCtx); err != nil {

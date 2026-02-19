@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"math/rand"
 	"strings"
 	"time"
@@ -100,9 +101,11 @@ func (s *OrderService) ProcessOrder(ctx context.Context, orderID string) error {
 	}
 
 	if order.Status != model.StatusCreated {
+		log.Printf("msg=order_status_skip order_id=%s current_status=%s", orderID, order.Status)
 		return nil
 	}
 
+	log.Printf("msg=order_status_change order_id=%s from=%s to=%s", orderID, model.StatusCreated, model.StatusProcessing)
 	if err := s.repo.UpdateStatus(ctx, orderID, model.StatusProcessing); err != nil {
 		return fmt.Errorf("set processing id=%s: %w", orderID, err)
 	}
@@ -111,6 +114,7 @@ func (s *OrderService) ProcessOrder(ctx context.Context, orderID string) error {
 		return fmt.Errorf("simulate processing id=%s: %w", orderID, err)
 	}
 
+	log.Printf("msg=order_status_change order_id=%s from=%s to=%s", orderID, model.StatusProcessing, model.StatusCompleted)
 	if err := s.repo.UpdateStatus(ctx, orderID, model.StatusCompleted); err != nil {
 		return fmt.Errorf("set completed id=%s: %w", orderID, err)
 	}
