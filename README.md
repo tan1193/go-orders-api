@@ -1,5 +1,7 @@
 # go-order-service
 
+minimal Go order service example demonstrating:
+
 - `net/http` REST endpoints
 - Postgres via `database/sql`
 - service/repository separation
