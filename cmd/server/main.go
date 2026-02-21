@@ -35,12 +35,6 @@ func main() {
 
 	logger.Printf("msg=db_connection_successful")
 
-	pingCtx, pingCancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer pingCancel()
-	if err := db.PingContext(pingCtx); err != nil {
-		logger.Fatalf("msg=db_ping_failed err=%q", err)
-	}
-
 	repo := repository.NewPostgresOrderRepository(db, 2*time.Second)
 	queue := make(chan string, 100)
 	svc := service.NewOrderService(repo, worker.ChannelEnqueuer{Ch: queue})
