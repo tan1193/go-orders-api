@@ -1,7 +1,5 @@
 # go-order-service
 
-Minimal interview-ready Go Order API with:
-
 - `net/http` REST endpoints
 - Postgres via `database/sql`
 - service/repository separation
