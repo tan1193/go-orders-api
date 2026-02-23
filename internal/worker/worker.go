@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 )
-
+// interface in consumer side
 type Processor interface {
 	ProcessOrder(ctx context.Context, orderID string) error
 }

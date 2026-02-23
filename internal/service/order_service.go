@@ -99,7 +99,7 @@ func (s *OrderService) ProcessOrder(ctx context.Context, orderID string) error {
 	if err != nil {
 		return fmt.Errorf("load order before processing id=%s: %w", orderID, err)
 	}
-
+	log.Printf("msg=order_loaded_for_processing order_id=%s status=%s", orderID, order.Status)
 	if order.Status != model.StatusCreated {
 		log.Printf("msg=order_status_skip order_id=%s current_status=%s", orderID, order.Status)
 		return nil
@@ -109,7 +109,7 @@ func (s *OrderService) ProcessOrder(ctx context.Context, orderID string) error {
 	if err := s.repo.UpdateStatus(ctx, orderID, model.StatusProcessing); err != nil {
 		return fmt.Errorf("set processing id=%s: %w", orderID, err)
 	}
-
+	// Simulate processing time with random delay between 300-800ms
 	if err := s.sleepFn(ctx, s.delayFn()); err != nil {
 		return fmt.Errorf("simulate processing id=%s: %w", orderID, err)
 	}
